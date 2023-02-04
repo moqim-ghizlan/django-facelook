@@ -1,0 +1,99 @@
+<!doctype html>
+{% load static %}
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="{% static 'assets/icons/favicon.ico' %}" type="image/png">
+    {% block styles %}
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    {% endblock %}
+
+    {% block fonts %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    {% endblock %}
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+</head>
+
+<body>
+    {% block nav %}
+    <header>
+        <div
+            style="display:flex;max-width:var(--max-width);width:100%;display:flex;align-items: center;gap:10px;justify-content: center;">
+            <div
+                style="flex:1;position:relative;display:flex;align-items:center;padding:3px 8px;width:fit-content;border:1px solid var(--border-color);border-radius: 5px;overflow:hidden;height:fit-content">
+                <form action="{% url 'index' %}" method="GET" style="display:flex;align-items: center;width:100%;">
+
+                    <input style="width:100%;padding-right:22px" placeholder="Ecrivez votre recherche ici..."
+                        type="text" name="q">
+                    <svg style="right:8px;position:absolute;pointer-events:none" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 512 512">
+                        <path
+                            d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z" />
+                    </svg>
+                </form>
+
+            </div>
+
+            <a style="flex: 1;text-align: center;font-size: 24px;font-weight: 500;color: var(--primary-color);"
+                href="{% url 'index' %}">FACELOOK</a>
+
+
+            <div style="flex:1;display:flex;align-items: center;justify-content: flex-end;">
+                {% if request.user.is_authenticated %}
+
+
+                <div style="width:fit-content;display:flex;align-items: center;gap:5px;padding:5px">
+                    {% load static %}
+                    <a href="{% url 'profile' id=request.user.id %}" class="background-trigger" style="display:flex;align-items: center;gap:6px">
+                        <img src="{% static 'user_images/pngegg.png' %}"
+                            style="object-fit:cover;width:26px;height:26px;border-radius:50px">
+                        <span style="white-space: nowrap;">{{request.user.username}}</span></a>
+                    <a class="primary-trigger" href="{% url 'logout' %}">Se déconnecter</a>
+                    {% else %}
+                    <a class="primary-trigger" href="{% url 'login_user' %}">Se connecter</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav id="mobile-navbar" class="mobile">
+        <button onclick="changeState('home')" class="round-trigger">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                <path
+                    d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z" />
+            </svg>
+        </button>
+
+        <button onclick="changeState('topics')" class="round-trigger">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                <path d="M0 512L192 400 384 512V0H0V512z" />
+            </svg>
+        </button>
+
+        <button onclick="changeState('search')" class="round-trigger">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path
+                    d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z" />
+            </svg>
+        </button>
+    </nav>
+    {% endblock %}
+    <main role="main" class="container top-pushed" data-state="home">
+        <div class="jumbotron">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+    {% block js %}
+    {% endblock %}
+</body>
+
+</html>

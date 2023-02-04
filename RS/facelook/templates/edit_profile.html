@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}FaceLook | Modifier votre profile{% endblock %}
+{% block content %}
+
+<form class="box" method="POST"
+    style="display:flex;flex-direction:column;margin:0 auto;gap:20px;width:100%;max-width: 500px;">
+    <h1 style="margin:0 auto">Editer le profil</h1>
+
+    {% csrf_token %}
+    <div style="display:flex;align-items: center;">
+        <label for="first_name" style="flex:1">Prénom :</label>
+        <input type="text" style="flex:2" name="first_name" id="first_name" placeholder="Prénom"
+            value="{{ request.user.first_name }}">
+    </div>
+
+    <div style="display:flex;align-items: center;">
+        <label for="first_name" style="flex:1">Nom :</label>
+        <input type="text" style="flex:2" name="last_name" id="last_name" placeholder="Nom"
+            value="{{ request.user.last_name }}">
+    </div>
+
+
+    <div style="display:flex;align-items: center;">
+        <label for="first_name" style="flex:1">Email :</label>
+        <input type="email" style="flex:2" name="email" id="email" placeholder="Email" value="{{ request.user.email }}">
+    </div>
+
+
+    <div style="display:flex;align-items: center;">
+        <label for="first_name" style="flex:1">Nom d'utilisateur</label>
+        <input type="text" style="flex:2" name="username" id="username" placeholder="Nom d'utilisateur"
+            value="{{ request.user.username }}">
+    </div>
+
+
+    <div style="display:flex;align-items: center;">
+        <label for="first_name" style="flex:1">Mot de passe :</label>
+        <input type="password" style="flex:2" name="password" id="password" placeholder="Mot de passe">
+    </div>
+
+
+    <div style="display:flex;align-items: center;">
+        <label for="first_name" style="flex:1">Bio :</label>
+        <input type="text" name="bio" id="bio" style="flex:2" placeholder="Bio" value="{{ request.user.bio }}">
+    </div>
+    {% if error %}
+    <p class="error" style="margin:5px 0 0">{{ error }}</p>
+    {% endif %}
+
+
+    <a class="background-trigger" href="{% url 'password_edit' %}" style="margin:0 auto">Modifier le mot de passe ?</a>
+    <button class="primary-trigger" type="submit" style="margin:0 auto">Valider</button>
+    <!-- {% for field in form  %}
+            {{ field }}
+        {% endfor %} -->
+</form>
+
+
+{% endblock %}

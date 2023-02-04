@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Liste des topics pour un utilisateur{% endblock %}
+{% block content %}
+<!-- POSTS SECTION START -->
+<section id="posts-container"  style="width:100%;margin:0 auto;max-width: 700px;">
+    <h2>Les sujets de @{{ user.username }}</h2>
+    <form method="GET" >
+
+        <input style="width:100%;padding-right:22px" placeholder="Recherche..."
+            type="text" name="q">
+    </form>
+    <div id="posts" style="display:flex;flex-direction:column;width:100%;gap:15px">
+        {% for topic in topics %}
+        <a href="{% url 'topic' topic.id %}">
+            <div class="box">
+                <p>{{ topic.text }}</p>
+                <div style="display:flex;align-items: center;gap:10px;color:#666;font-size:13px;font-weight: 500;">
+                    <div style="display:flex;align-items:center;gap:3px">
+                        {% load static %}
+                        <img src="{% static 'user_images/pngegg.png' %}"
+                            style="width:15px;height:15px;border-radius:50%">
+                        <a href="{% url 'posts_for_user' topic.creator.id %}"><span style="text-overflow: ellipsis">
+                                @{{ topic.creator.username }}</span></a>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:3px">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path
+                                d="M232 120C232 106.7 242.7 96 256 96C269.3 96 280 106.7 280 120V243.2L365.3 300C376.3 307.4 379.3 322.3 371.1 333.3C364.6 344.3 349.7 347.3 338.7 339.1L242.7 275.1C236 271.5 232 264 232 255.1L232 120zM256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0zM48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48C141.1 48 48 141.1 48 256z" />
+                        </svg>
+                        <span>Il y a {{ topic.date|timesince }}</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+<!-- POSTS SECTION END -->
+{% endblock %}

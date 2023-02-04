@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block title %}Liste des posts pour un utilisateur{% endblock %}
+{% block content %}
+<!-- POSTS SECTION START -->
+
+<div style="display:flex;flex-direction: column;align-items: center;margin:0 auto;width:100%;max-width: 600px;">
+    <h1>Actualité(s) de <a style="color:var(--primary-color)" href="{% url 'profile' user.id %}">@{{ user.username }}</a></h1>
+    <form method="GET" style = "margin-bottom:20px; width: 600px;" >
+        <input style="width:100%;padding-right:22px" placeholder="Recherche..."
+            type="text" name="q">
+    </form>
+    
+    <section id="posts-container" style="width: 100%;">
+        <div id="posts" style="display:flex;flex-direction:column;gap:15px">
+            {% for post in posts %}
+                <div class="box" id="{{ post.id }}">
+                    <h3 style="margin:0">Provient de : <a style="color:var(--primary-color);" href="{% url 'topic' post.topic.id %}">{{ post.topic }}</a></h3>
+                    <a href="{% url 'posts' id=post.id %}">{{ post.text }}</a>
+
+
+                    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:15px">
+
+                        <div class="infos-container" style="display:flex;align-items:center;gap:4px">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path
+                                    d="M232 120C232 106.7 242.7 96 256 96C269.3 96 280 106.7 280 120V243.2L365.3 300C376.3 307.4 379.3 322.3 371.1 333.3C364.6 344.3 349.7 347.3 338.7 339.1L242.7 275.1C236 271.5 232 264 232 255.1L232 120zM256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0zM48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48C141.1 48 48 141.1 48 256z">
+                                </path>
+                            </svg>
+                            {{ post.date|timesince }}
+
+                            <svg style="margin-left:10px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                <path
+                                    d="M272 304h-96C78.8 304 0 382.8 0 480c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32C448 382.8 369.2 304 272 304zM48.99 464C56.89 400.9 110.8 352 176 352h96c65.16 0 119.1 48.95 127 112H48.99zM224 256c70.69 0 128-57.31 128-128c0-70.69-57.31-128-128-128S96 57.31 96 128C96 198.7 153.3 256 224 256zM224 48c44.11 0 80 35.89 80 80c0 44.11-35.89 80-80 80S144 172.1 144 128C144 83.89 179.9 48 224 48z">
+                                </path>
+                            </svg>
+                            <a href="{% url 'posts_for_user' post.creator.id %}">@{{ post.creator.username }}</a>
+                        </div>
+
+
+
+                        <div style="display:flex;align-items: center;gap:10px;border-radius: 15px;max-width:120px;width: 100%;justify-content: center;
+                        margin-left:auto">
+                            <button class="background-trigger"
+                                style="flex:1;display:flex;align-items: center;gap:5px;justify-content: center;font-size: 13px;color:#000000DD"
+                                data-id="{{ post.id }}" onclick="likePost(this)" id="btn-post-lik" {% if post.liked %}
+                                class="post-liked" {% endif %}>
+                                <span id="likes-counter">{{ post.like_counter }}</span>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="margin-bottom: 3px;">
+                                    <path
+                                        d="M96 191.1H32c-17.67 0-32 14.33-32 31.1v223.1c0 17.67 14.33 31.1 32 31.1h64c17.67 0 32-14.33 32-31.1V223.1C128 206.3 113.7 191.1 96 191.1zM512 227c0-36.89-30.05-66.92-66.97-66.92h-99.86C354.7 135.1 360 113.5 360 100.8c0-33.8-26.2-68.78-70.06-68.78c-46.61 0-59.36 32.44-69.61 58.5c-31.66 80.5-60.33 66.39-60.33 93.47c0 12.84 10.36 23.99 24.02 23.99c5.256 0 10.55-1.721 14.97-5.26c76.76-61.37 57.97-122.7 90.95-122.7c16.08 0 22.06 12.75 22.06 20.79c0 7.404-7.594 39.55-25.55 71.59c-2.046 3.646-3.066 7.686-3.066 11.72c0 13.92 11.43 23.1 24 23.1h137.6C455.5 208.1 464 216.6 464 227c0 9.809-7.766 18.03-17.67 18.71c-12.66 .8593-22.36 11.4-22.36 23.94c0 15.47 11.39 15.95 11.39 28.91c0 25.37-35.03 12.34-35.03 42.15c0 11.22 6.392 13.03 6.392 22.25c0 22.66-29.77 13.76-29.77 40.64c0 4.515 1.11 5.961 1.11 9.456c0 10.45-8.516 18.95-18.97 18.95h-52.53c-25.62 0-51.02-8.466-71.5-23.81l-36.66-27.51c-4.315-3.245-9.37-4.811-14.38-4.811c-13.85 0-24.03 11.38-24.03 24.04c0 7.287 3.312 14.42 9.596 19.13l36.67 27.52C235 468.1 270.6 480 306.6 480h52.53c35.33 0 64.36-27.49 66.8-62.2c17.77-12.23 28.83-32.51 28.83-54.83c0-3.046-.2187-6.107-.6406-9.122c17.84-12.15 29.28-32.58 29.28-55.28c0-5.311-.6406-10.54-1.875-15.64C499.9 270.1 512 250.2 512 227z" />
+                                </svg>
+                            </button>
+
+                            <button class="background-trigger"
+                                style="flex:1;display:flex;align-items: center;gap:5px;justify-content: center;font-size: 13px;color:#000000DD"
+                                data-id="{{ post.id }}" onclick="dislikePost(this)" id="btn-post-dislik" {% if post.disliked %} class="post-disliked" {% endif %}>
+                                <span id="dislikes-counter">{{ post.dislike_counter }}</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="margin-top: 1px;">
+                                    <path
+                                        d="M128 288V64.03c0-17.67-14.33-31.1-32-31.1H32c-17.67 0-32 14.33-32 31.1v223.1c0 17.67 14.33 31.1 32 31.1h64C113.7 320 128 305.7 128 288zM481.5 229.1c1.234-5.092 1.875-10.32 1.875-15.64c0-22.7-11.44-43.13-29.28-55.28c.4219-3.015 .6406-6.076 .6406-9.122c0-22.32-11.06-42.6-28.83-54.83c-2.438-34.71-31.47-62.2-66.8-62.2h-52.53c-35.94 0-71.55 11.87-100.3 33.41L169.6 92.93c-6.285 4.71-9.596 11.85-9.596 19.13c0 12.76 10.29 24.04 24.03 24.04c5.013 0 10.07-1.565 14.38-4.811l36.66-27.51c20.48-15.34 45.88-23.81 71.5-23.81h52.53c10.45 0 18.97 8.497 18.97 18.95c0 3.5-1.11 4.94-1.11 9.456c0 26.97 29.77 17.91 29.77 40.64c0 9.254-6.392 10.96-6.392 22.25c0 13.97 10.85 21.95 19.58 23.59c8.953 1.671 15.45 9.481 15.45 18.56c0 13.04-11.39 13.37-11.39 28.91c0 12.54 9.702 23.08 22.36 23.94C456.2 266.1 464 275.2 464 284.1c0 10.43-8.516 18.93-18.97 18.93H307.4c-12.44 0-24 10.02-24 23.1c0 4.038 1.02 8.078 3.066 11.72C304.4 371.7 312 403.8 312 411.2c0 8.044-5.984 20.79-22.06 20.79c-12.53 0-14.27-.9059-24.94-28.07c-24.75-62.91-61.74-99.9-80.98-99.9c-13.8 0-24.02 11.27-24.02 23.99c0 7.041 3.083 14.02 9.016 18.76C238.1 402 211.4 480 289.9 480C333.8 480 360 445 360 411.2c0-12.7-5.328-35.21-14.83-59.33h99.86C481.1 351.9 512 321.9 512 284.1C512 261.8 499.9 241 481.5 229.1z" />
+                                </svg>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                {% endfor %}
+    </section>
+</div>
+
+<style>
+    .post-liked {
+        color: blue;
+    }
+
+    .post-disliked {
+        color: blue;
+    }
+</style>
+<script>
+    async function likePost(el) {
+        const id = el.getAttribute('data-id');
+        let like = document.getElementById(id).querySelector('#btn-post-lik');
+        let dislike = document.getElementById(id).querySelector('#btn-post-dislik');
+        let likesCounter = document.getElementById(id).querySelector('#likes-counter');
+        let deslikesCounter = document.getElementById(id).querySelector('#dislikes-counter');
+
+        await fetch('/api/post/' + id + '/like');
+
+        if (!like.classList.contains('post-liked')) {
+            like.classList.add('post-liked');
+            if (dislike.classList.contains('post-disliked')) {
+                dislike.classList.remove('post-disliked')
+            }
+        } else {
+            like.classList.remove('post-liked');
+        }
+        updateNbs(id);
+
+    }
+
+
+    async function dislikePost(el) {
+        const id = el.getAttribute('data-id');
+        let like = document.getElementById(id).querySelector('#btn-post-lik');
+        let dislike = document.getElementById(id).querySelector('#btn-post-dislik');
+        let likesCounter = document.getElementById(id).querySelector('#likes-counter');
+        let deslikesCounter = document.getElementById(id).querySelector('#dislikes-counter');
+
+        await fetch('/api/post/' + id + '/dislike');
+        if (!dislike.classList.contains('post-disliked')) {
+            dislike.classList.add('post-disliked');
+            if (like.classList.contains('post-liked')) {
+                like.classList.remove('post-liked')
+            }
+        } else {
+            dislike.classList.remove('post-disliked');
+        }
+        updateNbs(id)
+
+    }
+
+    function updateNbs(id) {
+        let likesCounter = document.getElementById(id).querySelector('#likes-counter');
+        let deslikesCounter = document.getElementById(id).querySelector('#dislikes-counter');
+        fetch('/api/post/' + id + '/nombers/likes')
+            .then(response => response.json())
+            .then(data => {
+                likesCounter.innerHTML = data['likes']
+                deslikesCounter.innerHTML = data['dislikes']
+            });
+    }
+</script>
+
+<!-- POSTS SECTION END -->
+{% endblock %}

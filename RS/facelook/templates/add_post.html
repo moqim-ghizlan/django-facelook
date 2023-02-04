@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}FaceLook | Ajouter un post{% endblock %}
+{% block content %}
+<form method="POST" class="box" style="margin:20px auto 0; align-items:center">
+    <h1>Modifier le post</h1>
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if new %}
+    <button class="primary-trigger" type="submit" style="margin-top:8px">Ajouter</button>
+    <a class="primary-trigger background-trigger" style="margin-top:5px" href="{% url 'add_topic' %}">Ajouter un sujet</a>
+    {% else %}
+    <button class="primary-trigger" type="submit" style="margin-top:8px">Modifier</button>
+    <button class="primary-trigger" style="margin-top:8px"><a
+            href="{% url 'delete' id=post.id type_of_object='post' %}">Supprimer</a></button>
+
+    {% endif %}
+</form>
+
+<script>
+    var urlParams = new URLSearchParams(window.location.search);
+    var option = urlParams.get('topic');
+    console.log(option)
+    let topics = document.querySelector('[name="topic"]');
+    console.log(topics)
+    for (let i = 0; i < topics.length; i++) {
+        console.log(topics[i].value)
+        if (topics[i].text == option) {
+            topics[i].selected = true;
+            break;
+        }
+    }
+</script>
+{% endblock %}

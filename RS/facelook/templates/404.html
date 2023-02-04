@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}FaceLook | 404{% endblock %}
+{% block content %}
+
+<div id="page-404">
+    <h1 style="margin:0;margin-top:40px">404</h1>
+    <h3 style="margin-bottom:0">Page introuvable.</h3>
+    <p>La page que vous recherchez est introuvable.
+    </p>
+    <a class="primary-trigger" href="{% url 'index' %}">Retour à l'accueil</a></button>
+</div>
+{% endblock %}

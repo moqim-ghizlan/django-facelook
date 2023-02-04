@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Liste des utilisateurs{% endblock %}
+{% block content %}
+<!-- POSTS SECTION START -->
+<section id="users-container" style="flex:3;display:flex;flex-direction: column;align-items: center;">
+    <h1>Liste des utilisateurs</h1>
+    <form action="{% url 'users_list' %}" method="GET" >
+
+        <input style="width:100%;padding-right:22px" placeholder="Ecrivez votre recherche ici..."
+            type="text" name="q">
+    </form>
+
+
+    <div id="users"
+        style="padding-bottom: 1rem;margin:15px auto 0;display:flex;justify-content: center;flex-wrap: wrap;
+        gap:15px">
+
+        {% for user in users %}
+        {% if user != request.user %}
+        <div class="box background-trigger">
+            <a href="{% url 'profile' user.id %}"
+                style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                {% load static %}
+                <img src="{% static 'user_images/pngegg.png' %}" style="width:45px;height:45px;border-radius:50%">
+                <h4 style="margin:0">@{{ user.username }}</h4>
+            </a>
+            <div style="display:flex;align-items: center;gap:10px;color:#666;font-size:13px;font-weight: 500;">
+                <div style="display:flex;align-items:center;gap:3px">
+                    <div id="{{ user.id }}">
+                        <ul>
+                            <li>Topics : {{ user.nb_topics }}</li>
+                            <li>Posts : {{ user.nb_posts }}</li>
+                            <li>Abonné(s) : {{ user.nb_followers }}</li>
+                            <li>Abonnement(s) : {{ user.nb_following }}</li>
+                            {% if user.i_follow %}
+                            <li>Suivi(e)</li>
+                            {% else %}
+                            <li>Non suivi(e)</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:3px">
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+</section>
+<script>
+    function getAllUsers() {
+        fetch('/api/list/users')
+            .then(response => response.json())
+            .then(data => {
+                for (let i = 0; i < data.length; i++) {
+                    console.log(data[i]['nb_topics']); // exemple
+                }
+            });
+    }
+    getAllUsers()
+
+</script>
+<!-- POSTS SECTION END -->
+{% endblock %}

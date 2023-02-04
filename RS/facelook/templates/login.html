@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}FaceLook | Login{% endblock %}
+{% block content %}
+<!-- <style>
+    .errorlist.nonfield > li {
+        display: none;
+    }
+</style> -->
+<form method="POST" class="box" style="display:flex;margin:0 auto;flex-direction: column;align-items: center;max-width: 600px;width:100%;">
+    <h1>Se connecter</h1>
+
+    {% csrf_token %}
+    {{ login_form.as_p }}
+    
+    <button class="primary-trigger" type="submit" style="margin-top:10px">Se connecter</button>
+    <a class="background-trigger" type="button" href="{% url 'registe' %}"
+        style="width: fit-content;margin-top:10px">S'inscrire</a>
+        <!-- {% if error__ %}
+		<p>{{ error__ }}</p>
+	{% endif %} -->
+</form><br>
+{% endblock %}

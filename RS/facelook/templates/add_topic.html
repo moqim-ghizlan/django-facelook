@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}FaceLook | Ajouter un sujet{% endblock %}
+{% block content %}
+<form method="POST" class="box" style="margin:20px auto 0 auto">
+    <h1>Ajouter un topic</h1>
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if new %}
+    <button class="primary-trigger" type="submit" style="margin:10px auto 0">Ajouter</button>
+    {% else %}
+    <a href="{% url 'edit_topic'  id=topic.id %}" class="primary-trigger" type="submit" style="margin:10px auto 0">Modifier</a>
+    <a href="{% url 'delete'  id=topic.id type_of_object='topic' %}" class="primary-trigger" type="submit" style="margin:10px auto 0">Supprimer</a>
+    {% endif %}
+</form>
+<style>
+    label {
+    margin-right: 1rem;
+}
+</style>
+{% endblock %}
+azd

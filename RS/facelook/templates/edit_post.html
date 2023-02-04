@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}FaceLook | Modifier un post{% endblock %}
+{% block content %}
+<form method="POST" class="box" style="margin:20px auto 0 auto">
+    <h1>Modifier un post</h1>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="primary-trigger" style="margin:10px auto 0" type="submit">Valider</button>
+    <a href="{% url 'delete'  id=object.id type_of_object='post' %}" class="primary-trigger" type="submit" style="margin:10px auto 0">Supprimer</a>
+</form>
+<style>
+    label {
+    margin-right: 1rem;
+}
+</style>
+{% endblock %}

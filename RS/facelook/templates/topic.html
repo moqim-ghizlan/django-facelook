@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% block title %}Faceloot | Topic{% endblock %}
+{% block content %}
+
+
+<!-- POSTS SECTION START -->
+<div style="display:flex;flex-direction: column;flex:1;max-width: 550px;margin:0 auto">
+    <section id="posts-container" class="box" style="flex:1">
+        <div class="topic">
+            <h3 style="margin:10px 0;">{{ topic.title }}</h3>
+            <p>{{ topic.text }}</p>
+
+            <div class="infos-container" style="display:flex;align-items:center;gap:4px">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path
+                        d="M232 120C232 106.7 242.7 96 256 96C269.3 96 280 106.7 280 120V243.2L365.3 300C376.3 307.4 379.3 322.3 371.1 333.3C364.6 344.3 349.7 347.3 338.7 339.1L242.7 275.1C236 271.5 232 264 232 255.1L232 120zM256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0zM48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48C141.1 48 48 141.1 48 256z" />
+                </svg>
+                {{ topic.date }}
+
+                <svg style="margin-left:10px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <path
+                        d="M272 304h-96C78.8 304 0 382.8 0 480c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32C448 382.8 369.2 304 272 304zM48.99 464C56.89 400.9 110.8 352 176 352h96c65.16 0 119.1 48.95 127 112H48.99zM224 256c70.69 0 128-57.31 128-128c0-70.69-57.31-128-128-128S96 57.31 96 128C96 198.7 153.3 256 224 256zM224 48c44.11 0 80 35.89 80 80c0 44.11-35.89 80-80 80S144 172.1 144 128C144 83.89 179.9 48 224 48z" />
+                </svg>
+                <a href="{% url 'profile' topic.creator.id %}">@{{ topic.creator.username }}</a>
+            </div>
+
+
+            {% if topic.creator == request.user %}
+            <a href="{% url 'edit_topic'  id=topic.id %}" class="primary-trigger" style="margin:10px 0 0 auto;display:flex">Modifier le topic</a>
+            {% endif %}
+        </div>
+
+    </section>
+
+
+
+    <div id="posts">
+        <h3>Posts for that topic</h3>
+        {% for post in posts %}
+        <div>
+            <div class="box" id="{{ post.id }}" style="margin-bottom: 1rem;">
+                <p style="margin:4px 0 8px 0">{{ post.text }}</p>
+             
+                <!-- 
+                <div style="display:flex;align-items: center;gap:10px;color:#666;font-size:13px;font-weight: 500;">
+                    <div style="display:flex;align-items:center;gap:3px">
+                        {% load static %}
+                        <img src="{% static 'user_images/pngegg.png' %}"
+                            style="width:15px;height:15px;border-radius:50%">
+                        <a href="{% url 'profile' post.creator.id %}"><span style="text-overflow: ellipsis">
+                                @{{ post.creator.username }}</span></a>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:3px">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path
+                                d="M232 120C232 106.7 242.7 96 256 96C269.3 96 280 106.7 280 120V243.2L365.3 300C376.3 307.4 379.3 322.3 371.1 333.3C364.6 344.3 349.7 347.3 338.7 339.1L242.7 275.1C236 271.5 232 264 232 255.1L232 120zM256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0zM48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48C141.1 48 48 141.1 48 256z" />
+                        </svg>
+                        <span>Il y a {{ post.date|timesince }}</span>
+
+                        {% if post.creator == request.user %}
+                        <a href="{% url 'edit_post' post.id %}">Edit Post</a>
+                        {% endif %}
+                    </div>
+                </div>
+                 -->
+
+
+                <div class="infos-container" style="display:flex;align-items:center;gap:4px">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path
+                            d="M232 120C232 106.7 242.7 96 256 96C269.3 96 280 106.7 280 120V243.2L365.3 300C376.3 307.4 379.3 322.3 371.1 333.3C364.6 344.3 349.7 347.3 338.7 339.1L242.7 275.1C236 271.5 232 264 232 255.1L232 120zM256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0zM48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48C141.1 48 48 141.1 48 256z" />
+                    </svg>
+                    {{ topic.date }}
+
+                    <svg style="margin-left:10px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path
+                            d="M272 304h-96C78.8 304 0 382.8 0 480c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32C448 382.8 369.2 304 272 304zM48.99 464C56.89 400.9 110.8 352 176 352h96c65.16 0 119.1 48.95 127 112H48.99zM224 256c70.69 0 128-57.31 128-128c0-70.69-57.31-128-128-128S96 57.31 96 128C96 198.7 153.3 256 224 256zM224 48c44.11 0 80 35.89 80 80c0 44.11-35.89 80-80 80S144 172.1 144 128C144 83.89 179.9 48 224 48z" />
+                    </svg>
+                    <a href="{% url 'profile' topic.creator.id %}">@{{ topic.creator.username }}</a>
+                </div>
+
+
+                <!-- 
+                <div>
+                    <button data-id="{{ post.id }}" onclick="likePost(this)" id="btn-post-lik" {% if post.liked %}
+                        class="post-liked" {% endif %}> <span id="likes-counter">
+                            {{ post.like_counter }}</span> <span> likes</span>
+                    </button>
+                    <button data-id="{{ post.id }}" onclick="dislikePost(this)" id="btn-post-dislik" 
+                    {% if post.disliked %} class="post-disliked" {% endif %}>
+                        <span id="dislikes-counter">{{ post.dislike_counter }}</span><span> dislikes</span>
+                    </button>
+                </div>
+                 -->
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="box">
+        <h4 style="margin:0 0 10px 0">Ajouter un post</h4>
+
+        <form method="POST" action="{% url 'add_post' %}?topic={{topic.title}}">
+            {% csrf_token %}
+            <button type="submit" class="primary-trigger">Ajouter un post</button>
+        </form>
+
+
+    </div>
+</div>
+
+
+
+
+<style>
+    .post-liked {
+        color: blue;
+    }
+
+    .post-disliked {
+        color: blue;
+    }
+</style>
+<script>
+    async function likePost(el) {
+        const id = el.getAttribute('data-id');
+        let like = document.getElementById(id).querySelector('#btn-post-lik');
+        let dislike = document.getElementById(id).querySelector('#btn-post-dislik');
+        let likesCounter = document.getElementById(id).querySelector('#likes-counter');
+        let deslikesCounter = document.getElementById(id).querySelector('#dislikes-counter');
+
+        await fetch('/api/post/' + id + '/like');
+
+        if (!like.classList.contains('post-liked')) {
+            like.classList.add('post-liked');
+            if (dislike.classList.contains('post-disliked')) {
+                dislike.classList.remove('post-disliked')
+            }
+        } else {
+            like.classList.remove('post-liked');
+        }
+        updateNbs(id);
+
+    }
+
+
+    async function dislikePost(el) {
+        const id = el.getAttribute('data-id');
+        let like = document.getElementById(id).querySelector('#btn-post-lik');
+        let dislike = document.getElementById(id).querySelector('#btn-post-dislik');
+        let likesCounter = document.getElementById(id).querySelector('#likes-counter');
+        let deslikesCounter = document.getElementById(id).querySelector('#dislikes-counter');
+
+        await fetch('/api/post/' + id + '/dislike');
+        if (!dislike.classList.contains('post-disliked')) {
+            dislike.classList.add('post-disliked');
+            if (like.classList.contains('post-liked')) {
+                like.classList.remove('post-liked')
+            }
+        } else {
+            dislike.classList.remove('post-disliked');
+        }
+        updateNbs(id)
+
+    }
+
+    function updateNbs(id) {
+        let likesCounter = document.getElementById(id).querySelector('#likes-counter');
+        let deslikesCounter = document.getElementById(id).querySelector('#dislikes-counter');
+        fetch('/api/post/' + id + '/nombers/likes')
+            .then(response => response.json())
+            .then(data => {
+                likesCounter.innerHTML = data['likes']
+                deslikesCounter.innerHTML = data['dislikes']
+            });
+    }
+</script>
+<!-- POSTS SECTION END -->
+{% endblock %}
