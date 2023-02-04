@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-*!j_^1)4fe$wgkl@zxtt)6_*y)j-qads9z_5nr^a=ssg$tgh-_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    
-    
+
+
+
     'facelook',
     'rest_framework',
     'corsheaders',
@@ -143,9 +143,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '/static/user_images')
@@ -155,3 +153,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 allow_database_queries = True
 # databases = '__all__'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static/staticfiles')
+]
